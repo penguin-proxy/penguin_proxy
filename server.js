@@ -121,5 +121,5 @@ server.on('upgrade', (req, socket, head) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Perfect Proxy is running on port ${PORT}`);
+    console.log(`Penguin Proxy is running on port ${PORT}`);
 });
