@@ -159,5 +159,5 @@ server.on('upgrade', (req, socket, head) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Penguin Pro is running on port ${PORT}`);
+    console.log(`Penguin Proxy is running on port ${PORT}`);
 });
