@@ -1,7 +1,7 @@
 {
-  "name": "perfect-web-proxy",
+  "name": "penguin_proxy",
   "version": "1.0.0",
-  "description": "高機能なBasic認証付きWebプロキシサーバー",
+  "description": "高機能なBasic認証付きWebプロキシサーバー (Penguin Proxy)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
