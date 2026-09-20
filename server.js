@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// プロキシの作成 (IPアドレス隠蔽)
+
 const proxy = httpProxy.createProxyServer({
     ws: true,
     changeOrigin: true,
@@ -39,7 +39,7 @@ proxy.on('proxyRes', (proxyRes, req, res) => {
         }
     }
 
-    // ★修正箇所: リダイレクト先を /view/ に変更
+    
     if (proxyRes.headers['location']) {
         const location = proxyRes.headers['location'];
         if (location.startsWith('http')) {
@@ -71,7 +71,7 @@ app.use(basicAuth({
     unauthorizedResponse: '認証が必要です。'
 }));
 
-// ★修正箇所: 相対リンク修復を /view/ に対応
+
 app.use((req, res, next) => {
     if (req.url === '/' || req.url === '/index.html' || req.url.startsWith('/view/')) {
         return next();
@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ★修正箇所: メインのプロキシ処理のパスを /view/ に変更
+
 app.all('/view/*', (req, res) => {
     const targetUrl = req.url.replace(/^\/view\//, '');
     if (!targetUrl.startsWith('http')) {
@@ -103,7 +103,7 @@ app.all('/view/*', (req, res) => {
 });
 
 const server = http.createServer(app);
-// ★修正箇所: WebSocketのパスを /view/ に変更
+
 server.on('upgrade', (req, socket, head) => {
     if (req.url.startsWith('/view/')) {
         const targetUrl = req.url.replace(/^\/view\//, '');
@@ -112,5 +112,5 @@ server.on('upgrade', (req, socket, head) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Penguin Proxy is running on port ${PORT}`);
+    console.log(`Penguin Pro is running on port ${PORT}`);
 });
