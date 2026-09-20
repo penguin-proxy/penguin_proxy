@@ -1,5 +1,5 @@
 {
-  "name": "penguin_proxy",
+  "name": "penguin_pro",
   "version": "1.0.0",
   "description": "高機能なBasic認証付きWebプロキシサーバー (Penguin Proxy)",
   "main": "server.js",
