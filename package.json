@@ -1,0 +1,14 @@
+{
+  "name": "perfect-web-proxy",
+  "version": "1.0.0",
+  "description": "高機能なBasic認証付きWebプロキシサーバー",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1",
+    "http-proxy": "^1.18.1"
+  }
+}
