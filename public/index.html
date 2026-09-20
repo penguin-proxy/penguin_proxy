@@ -100,7 +100,7 @@
             loadUrl(input.value);
         });
 
-        // iframe内の動きを監視して最強のリンク修復を行う
+        // iframe内の動きを監視してリンク修復を行う
         iframe.addEventListener('load', () => {
             try {
                 const currentIframeUrl = iframe.contentWindow.location.href;
@@ -119,7 +119,7 @@
                     doc.head.insertBefore(baseTag, doc.head.firstChild);
                 }
 
-                // リンククリックの強制インターセプト
+                // リンククリックのインターセプト
                 doc.body.addEventListener('click', (e) => {
                     const link = e.target.closest('a');
                     if (link && link.href && !link.href.startsWith('javascript:')) {
@@ -134,16 +134,15 @@
                     }
                 });
 
-                // フォーム送信の強制インターセプト
+                // フォーム送信のURL書き換え（サイトのAJAX通信を壊さないように優しく処理）
                 doc.body.addEventListener('submit', (e) => {
                     const f = e.target.closest('form');
                     if (f && f.action) {
-                        e.preventDefault();
                         let target = f.action;
-                        if (!target.includes('/view/')) {
+                        // 既にプロキシのURLになっていなければ書き換える
+                        if (target.startsWith('http') && !target.includes('/view/')) {
                             f.action = window.location.origin + '/view/' + target;
                         }
-                        f.submit();
                     }
                 });
             } catch (e) {
