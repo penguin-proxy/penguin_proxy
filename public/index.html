@@ -97,7 +97,7 @@
         <p>IP匿名化・WebSocket・リンク追従に対応したプロキシサーバーです。<br>上部のバーにURLを入力してブラウジングを開始してください。</p>
     </div>
 
-    <script>
+<script>
         const iframe = document.getElementById('browser-view');
         const form = document.getElementById('proxy-form');
         const input = document.getElementById('url-input');
@@ -108,7 +108,6 @@
             let url = input.value.trim();
             if (!url) return;
 
-            // URL自動補完と検索変換
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 if (url.includes('.')) {
                     url = 'https://' + url;
@@ -119,44 +118,43 @@
 
             welcome.style.display = 'none';
             iframe.style.display = 'block';
-            iframe.src = window.location.origin + '/proxy/' + url;
+            // ★修正箇所: /proxy/ を /view/ に変更
+            iframe.src = window.location.origin + '/view/' + url;
             input.value = url;
         });
 
-        // サイト内遷移を監視してプロキシ状態をキープ
         iframe.addEventListener('load', () => {
             try {
-                // URLバーの自動更新
                 const currentIframeUrl = iframe.contentWindow.location.href;
-                if (currentIframeUrl.includes('/proxy/')) {
-                    const realUrl = currentIframeUrl.split('/proxy/')[1];
+                // ★修正箇所: /proxy/ を /view/ に変更
+                if (currentIframeUrl.includes('/view/')) {
+                    const realUrl = currentIframeUrl.split('/view/')[1];
                     input.value = realUrl;
                 }
 
                 const iframeDoc = iframe.contentWindow.document;
 
-                // 外部サイト直リンクをクリックした時の処理
                 iframeDoc.addEventListener('click', (e) => {
                     const link = e.target.closest('a');
                     if (link && link.href) {
                         if (link.href.startsWith('http') && !link.href.startsWith(window.location.origin)) {
                             e.preventDefault();
-                            iframe.src = window.location.origin + '/proxy/' + link.href;
+                            // ★修正箇所: /proxy/ を /view/ に変更
+                            iframe.src = window.location.origin + '/view/' + link.href;
                         }
                     }
                 });
                 
-                // 検索フォームなどを送信した時の処理
                 iframeDoc.addEventListener('submit', (e) => {
                     const f = e.target.closest('form');
                     if (f && f.action && f.action.startsWith('http') && !f.action.startsWith(window.location.origin)) {
                         e.preventDefault();
-                        f.action = window.location.origin + '/proxy/' + f.action;
+                        // ★修正箇所: /proxy/ を /view/ に変更
+                        f.action = window.location.origin + '/view/' + f.action;
                         f.submit();
                     }
                 });
             } catch (e) {
-                // 厳格なCORSポリシーのサイトでは干渉を防ぐためスキップ
                 console.log('Cross-origin tracking protected.');
             }
         });
